@@ -160,7 +160,7 @@
                         <font color="white">想說的話</font>
                     </td>
                     <td colspan="5">
-                        <textarea name="comment" rows="5" cols="97" style="color: Gray;">留下你想對我們說的話吧！</textarea>
+                        <textarea name="comment" rows="5" cols="97"></textarea>
                     </td>
                 </tr>
                 <tr>
