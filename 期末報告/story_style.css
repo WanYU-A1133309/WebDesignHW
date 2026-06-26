@@ -1,0 +1,410 @@
+
+        :root {
+            --bg-main: #f4edd9;
+            --bg-card: #ffffff;
+            --ink: #4a3c31;
+            --brand: #8c6239;
+            --brand-light: #f3ede2;
+            --muted: #a39382;
+            --border: #eaddc5;
+            --nav-text: #5c4b3c;
+            --nav-text-hover: #b5523f;
+            --active-color: #e06a55;
+            --sub-menu-bg: #faefe0;
+            --highlight: #fff2cc;
+            --highlight-hover: #ffd966;
+        }
+        * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+        body { background: var(--bg-main); color: var(--ink); margin: 0; padding: 0; line-height: 1.6; }
+ 
+        .navbar {
+            background: #fff8ee; min-height: 75px; display: flex; align-items: center; justify-content: space-between;
+            padding: 0 40px; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; gap: 20px;
+        }
+        .nav-left { display: flex; align-items: center; gap: 30px; flex: 1; }
+        .logo { font-size: 24px; font-weight: 900; color: var(--brand); text-decoration: none; letter-spacing: 1px; white-space: nowrap; }
+        .nav-links { display: flex; gap: 24px; align-items: center; flex-wrap: nowrap; }
+        .nav-links a, .btn-create-trigger {
+            text-decoration: none; color: var(--nav-text); font-size: 15px; font-weight: bold;
+            display: flex; align-items: center; position: relative; transition: color 0.2s ease; gap: 4px; white-space: nowrap;
+        }
+        .nav-links a:hover, .btn-create-trigger:hover { color: var(--nav-text-hover); }
+        .nav-links a.active { color: var(--active-color); }
+ 
+        .creator-menu-wrapper { position: relative; display: flex; align-items: center; padding-bottom: 10px; margin-bottom: -10px; }
+        .btn-create-trigger { background: transparent; border: none; cursor: pointer; padding: 0; }
+        .creator-dropdown {
+            position: absolute; top: 35px; left: 0; background: #fff8ee; border: 1px solid var(--border);
+            border-radius: 8px; box-shadow: 0 10px 30px rgba(140,98,57,0.1); width: 180px;
+            display: none; flex-direction: column; padding: 8px 0; z-index: 2000;
+        }
+        .creator-menu-wrapper:hover .creator-dropdown { display: flex; }
+        .creator-dropdown a { padding: 12px 20px; text-decoration: none; color: var(--nav-text); font-size: 15px; font-weight: 500; display: block; }
+        .creator-dropdown a:hover { background: var(--sub-menu-bg); color: var(--active-color); }
+ 
+        .nav-right { display: flex; align-items: center; flex-shrink: 0; gap: 20px; }
+        .user-challenge { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: bold; }
+        .challenge-bar-bg { width: 70px; height: 8px; background: #eaddc5; border-radius: 4px; overflow: hidden; }
+        .challenge-bar-fill { height: 100%; background: var(--active-color); }
+        .user-wallet { display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: bold; background: #f3ede2; padding: 6px 12px; border-radius: 20px; }
+        .wallet-item { display: flex; align-items: center; gap: 2px; }
+ 
+        .avatar-wrap { position: relative; cursor: pointer; display: inline-block; flex-shrink: 0; }
+        .avatar-wrap::after {
+            content: ""; position: absolute; inset: -3px; border-radius: 50%;
+            background: conic-gradient(from 180deg, var(--brand), #e36a4b, #eab365, var(--brand)); z-index: -1;
+        }
+        .avatar { width: 46px; height: 46px; border-radius: 50%; object-fit: cover; border: 3px solid #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.08); display: block; }
+ 
+        .avatar-popover {
+            position: absolute; top: calc(100% + 14px); right: 0; width: 260px;
+            background: linear-gradient(180deg, #FFFCF6 0%, #FFF6E8 100%); border: 1px solid var(--border);
+            border-radius: 20px; padding: 20px; box-shadow: 0 10px 25px rgba(74,60,49,0.08);
+            opacity: 0; visibility: hidden; transform: translateY(10px);
+            transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s; z-index: 2000; text-align: center;
+        }
+        .avatar-wrap:hover .avatar-popover { opacity: 1; visibility: visible; transform: translateY(0); }
+        .avatar-popover::before {
+            content: ''; position: absolute; top: -6px; right: 18px; width: 10px; height: 10px;
+            background: #FFFCF6; border-left: 1px solid var(--border); border-top: 1px solid var(--border); transform: rotate(45deg);
+        }
+        .avatar-wrap .popover-btn {
+            display: block; width: 100%; padding: 11px; font-weight: 700; border-radius: 14px;
+            text-align: center; font-size: 14px; margin-top: 10px; transition: .2s ease;
+            border: 0 !important; cursor: pointer; text-decoration: none;
+        }
+        .avatar-wrap .avatar-popover a.popover-btn.primary { background: linear-gradient(135deg, #e36a4b, #e06a55) !important; color: #fff !important; }
+        .avatar-wrap .avatar-popover a.popover-btn.primary:hover { opacity: 0.9; transform: translateY(-1px); }
+        .avatar-wrap .avatar-popover a.popover-btn.secondary { background: #8C7C72 !important; color: #fff !important; }
+        .avatar-wrap .avatar-popover a.popover-btn.secondary:hover { background: #76685F !important; transform: translateY(-1px); }
+ 
+        /* Layout */
+        .read-layout {
+            max-width: 1440px; margin: 30px auto; padding: 0 30px;
+            display: grid; grid-template-columns: 280px 1fr 340px; gap: 24px; align-items: start;
+        }
+        .author-info-column { grid-area: left-side; }
+        .center-content     { grid-area: center-main; }
+        .right-panel        { grid-area: right-side; }
+        .bottom-rec-section { grid-area: bottom-rec; }
+ 
+        @media (min-width: 1201px) {
+            .read-layout {
+                grid-template-areas:
+                    "left-side center-main right-side"
+                    "left-side bottom-rec  right-side";
+            }
+            .right-panel        { position: sticky; top: 100px; max-height: calc(100vh - 140px); overflow-y: auto; }
+            .author-info-column { position: sticky; top: 100px; }
+        }
+ 
+        .panel { background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border); padding: 32px; box-shadow: 0 4px 16px rgba(74,60,49,0.04); }
+ 
+        .article-header { border-bottom: 1px solid var(--border); padding-bottom: 18px; margin-bottom: 24px; }
+        .chapter-badge { display: inline-block; background: var(--brand-light); color: var(--brand); font-size: 13px; font-weight: bold; padding: 4px 10px; border-radius: 6px; margin-bottom: 8px; }
+        .article-title { font-size: 28px; color: var(--brand); margin: 0 0 10px 0; font-weight: 800; }
+        .article-meta { font-size: 13px; color: var(--muted); }
+ 
+        .story-intro-block { background: #faf6ec; border-left: 4px solid var(--brand); padding: 16px 20px; margin-bottom: 24px; border-radius: 0 12px 12px 0; }
+        .story-intro-text { font-size: 15px; line-height: 1.8; color: #7a6855; font-style: italic; margin: 0; white-space: pre-wrap; }
+ 
+        .article-text { font-size: 18px; line-height: 2.3; color: #1a110b; letter-spacing: 0.8px; }
+        .article-text p, .article-text div, .article-text blockquote { margin-bottom: 28px; position: relative; border-radius: 4px; transition: background 0.2s; }
+        .highlight-text { background-color: transparent; border-bottom: 2px dotted #e6b800; cursor: pointer; padding: 2px 0; position: relative; display: inline; }
+        .highlight-text:hover { background-color: rgba(230, 184, 0, 0.1); }
+        
+       .highlight-text::after {
+            content: attr(data-count); 
+            position: absolute;
+            top: -10px;          
+            right: -12px;        
+            background-color: var(--active-color);
+            color: white;
+            font-size: 9px;      
+            font-weight: bold;
+            border-radius: 50%;  
+            width: 14px;         
+            height: 14px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+            z-index: 2;
+            line-height: 1;
+        }
+ 
+        .egg-bottom-box { margin-top: 40px; border-top: 2px dashed var(--border); padding-top: 30px; }
+        .egg-lock-screen { background: #faf6f0; border: 1px solid var(--border); border-radius: 16px; padding: 40px 20px; text-align: center; }
+        .btn-brand { background: var(--brand); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: bold; }
+ 
+        .article-footer { display: flex; justify-content: flex-end; padding-top: 24px; border-top: 1px solid var(--border); margin-top: 40px; }
+        .btn-next { background: #faf5ef; color: var(--brand); border: 1px solid var(--border); padding: 12px 28px; border-radius: 24px; font-weight: bold; cursor: pointer; text-decoration: none; transition: all 0.2s; }
+ 
+        /* 評論區 */
+        .right-panel { display: flex; flex-direction: column; gap: 20px; padding: 24px; }
+        .comment-box-title { font-weight: bold; font-size: 16px; color: var(--ink); margin-bottom: 14px; border-left: 4px solid var(--active-color); padding-left: 10px; }
+        .comment-tabs { display: flex; gap: 10px; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+        .comment-tab { font-size: 13px; font-weight: bold; color: var(--muted); cursor: pointer; padding: 4px 8px; }
+        .comment-tab.active { color: var(--active-color); border-bottom: 2px solid var(--active-color); }
+ 
+        .comment-input-area textarea {
+            width: 100%; min-height: 80px; padding: 12px; border-radius: 10px;
+            border: 1px solid var(--border); resize: vertical; font-size: 14px; background: #fafaf8;
+            transition: border-color 0.2s;
+        }
+        .comment-input-area textarea:focus { outline: none; border-color: var(--brand); }
+        .annotation-quote { font-size: 12px; background: var(--brand-light); border-left: 3px solid var(--brand); padding: 6px 10px; margin-bottom: 8px; color: #665544; display: none; border-radius: 4px; }
+        .reply-label { font-size: 12px; color: var(--active-color); padding: 4px 0 6px; display: none; font-weight: bold; }
+ 
+        .comment-list-scroll { max-height: 420px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding-right: 4px; }
+        .comment-item { background: #fdfbf7; padding: 12px; border-radius: 10px; font-size: 13px; border: 1px solid var(--border); transition: border-color 0.3s; }
+        .comment-item.highlight-focus { border-color: var(--active-color); box-shadow: 0 0 0 2px rgba(224,106,85,0.15); }
+ 
+        /* 愛心按鈕動畫 */
+        /* 按鈕整體與數字保持不透明 */
+        .like-btn { 
+            transition: transform 0.15s; 
+            color: var(--ink); /* 💡 讓數字顏色跟網頁內文一樣清晰 */
+        }
+        .like-btn:hover { 
+            transform: scale(1.1); 
+        }
+        
+        /* 💡 只讓裡面的愛心圖示預設半透明 */
+        .like-btn .heart-icon {
+            transition: color 0.2s, opacity 0.2s;
+            opacity: 0.4; /* 未點讚時愛心半透明 */
+            color: var(--muted);
+            margin-right: 2px;
+        }
+        /* 滑鼠移入按鈕時，愛心變亮 */
+        .like-btn:hover .heart-icon {
+            opacity: 1;
+        }
+        
+        /* 💡 當按鈕被加上 .liked 時，裡面的愛心變紅、變不透明 */
+        .like-btn.liked .heart-icon { 
+            color: var(--active-color) !important; 
+            opacity: 1; 
+        }
+ 
+        /* ── 反白浮動工具列 ── */
+        /* ── 反白浮動工具列 ── */
+        #selectionToolbar {
+            position: absolute; /* 💡 確保這裡改成 absolute，才會跟著網頁捲軸與滑鼠正確定位 */
+            z-index: 9999;
+            background: #2b1f17; color: #fff; border-radius: 24px;
+            display: none; align-items: center; gap: 0;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            overflow: hidden; font-size: 13px;
+        }
+        #selectionToolbar button {
+            background: none; border: none; color: #fff; cursor: pointer; padding: 8px 14px;
+            font-size: 13px; font-weight: bold; transition: background 0.2s;
+        }
+        #selectionToolbar button:hover { background: rgba(255,255,255,0.15); }
+        #selectionToolbar .sep { width: 1px; height: 24px; background: rgba(255,255,255,0.2); }
+ 
+        /* 反白內嵌輸入框 */
+       /* ── 畫面中央固定留言框 / 卡片兩用盒 ── */
+        #inlineCommentBox {
+            position: fixed; 
+            z-index: 10000; /* 💡 提高到 10000，確保絕對不會被導覽列或側欄擋住 */
+            background: #fff; 
+            border: 1px solid var(--border); 
+            border-radius: 12px;
+            box-shadow: 0 10px 35px rgba(0,0,0,0.18); /* 💡 加深陰影，讓中央彈窗更有立體感 */
+            padding: 14px; 
+            width: 300px; /* 💡 微調成 300px 寬度，裝文字和按鈕更舒適 */
+            display: none; 
+            flex-direction: column; 
+            gap: 8px;
+
+            /* 💡 核心新增：超完美置中魔法，無論何時打開都鎖死在螢幕正中間 */
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        #inlineCommentBox .quote-preview {
+            font-size: 11px; 
+            background: var(--highlight); 
+            border-left: 3px solid #e6b800;
+            padding: 6px 10px; /* 微調內襯 */
+            border-radius: 4px; 
+            color: #665500;
+            max-height: 60px; /* 💡 限制引文高度，太長會自動出捲軸 */
+            overflow-y: auto;
+        }
+        
+        #inlineCommentBox textarea {
+            width: 100%; 
+            border: 1px solid var(--border); 
+            border-radius: 8px; 
+            padding: 8px;
+            font-size: 13px; 
+            resize: none; 
+            height: 70px; 
+            background: #fafaf8;
+            box-sizing: border-box; /* 💡 防爆版，確保 padding 不會撐破寬度 */
+        }
+        #inlineCommentBox textarea:focus { outline: none; border-color: var(--brand); }
+        #inlineCommentBox .btn-row { display: flex; gap: 8px; justify-content: flex-end; }
+        #inlineCommentBox .btn-cancel { background: none; border: 1px solid var(--border); color: var(--muted); padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 12px; }
+        #inlineCommentBox .btn-send { background: var(--brand); color: #fff; border: none; padding: 6px 14px; border-radius: 8px; cursor: pointer; font-size: 12px; font-weight: bold; }
+        #inlineCommentBox .hint { font-size: 11px; color: var(--muted); text-align: right; }
+ 
+        /* 作者欄 */
+        .author-info-column { display: flex; flex-direction: column; gap: 20px; }
+        .author-card { text-align: center; padding: 24px 16px; }
+        .author-avatar { width: 64px; height: 64px; background: var(--brand-light); color: var(--brand); font-size: 28px; line-height: 64px; border-radius: 50%; margin: 0 auto 12px; }
+        .author-works-box { background: #faf8f5; border-radius: 12px; padding: 16px; border: 1px solid var(--border); }
+        .author-work-item { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px dashed var(--border); text-decoration: none; color: var(--ink); }
+        .author-work-item:last-child { border-bottom: none; }
+        .work-title { font-size: 14px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 1; }
+
+        /* 收藏按鈕 新的 */
+        .story-fav-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+        padding: 10px 16px;
+        background: #ffffff;
+        border: 1px solid #EDDFC8; /* 與內頁色系呼應的米金線條 */
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: bold;
+        color: #2B1A0F;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 10px rgba(80,40,10,0.04);
+        outline: none;
+        }
+
+        .story-fav-btn:hover {
+        transform: translateY(-1px);
+        border-color: #F6A26B; /* 亮色主色 */
+        box-shadow: 0 6px 14px rgba(80,40,10,0.08);
+        }
+
+        .story-fav-btn .star-icon {
+        font-size: 16px;
+        color: #a0aec0;
+        }
+
+        /* 🎯 當已經收藏（Active）時的亮金色狀態 */
+        .story-fav-btn.active {
+        background: linear-gradient(135deg, #FFFDFC, #FFF9F0);
+        border-color: #ffd000;
+        color: #E36A4B;
+        }
+        .story-fav-btn.active .star-icon {
+        color: #ffb800; /* 變成實心金星 */
+        }
+        /* 漂流頻新的ㄚㄚㄚ阿  */
+        .sidebar-bottle-card {
+            margin-top: 20px; /* 與上方「作者的其他作品」拉開間距 */
+            padding: 20px;
+            background: #FFFDF9; /* 配合你原本卡片的溫暖米白底色 */
+            border: 1px solid #EDDFC8; /* 融入你原本的 var(--line) 線條顏色 */
+            border-radius: 18px;
+            box-shadow: 0 4px 12px rgba(80,40,10,0.04);
+            font-family: system-ui, sans-serif;
+        }
+
+        .sidebar-bottle-title {
+            font-size: 15px;
+            font-weight: 800;
+            color: #2B1A0F; /* 配合你原本的 var(--ink) 深色字 */
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .sidebar-bottle-desc {
+            font-size: 12px;
+            color: #9A8675; /* 配合你原本的 var(--muted) 內文顏色 */
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .sidebar-bottle-textarea {
+            width: 100%;
+            height: 90px;
+            padding: 10px;
+            border: 1px solid #EDDFC8;
+            border-radius: 12px;
+            background-color: #FFF;
+            color: #2B1A0F;
+            font-size: 13px;
+            line-height: 1.5;
+            box-sizing: border-box;
+            outline: none;
+            resize: none;
+            transition: all 0.2s ease;
+        }
+
+        .sidebar-bottle-textarea:focus {
+            border-color: #F6A26B; /* 聚焦時走溫暖的甜甜圈橘色 */
+            box-shadow: 0 0 0 3px rgba(246, 162, 107, 0.15);
+        }
+
+        .sidebar-bottle-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #E36A4B, #F6A26B); /* 完美複製發布新作的漸層色 */
+            color: #fff;
+            border: none;
+            padding: 10px;
+            font-size: 13px;
+            font-weight: bold;
+            border-radius: 12px;
+            cursor: pointer;
+            margin-top: 8px;
+            box-shadow: 0 4px 12px rgba(227, 106, 75, 0.2);
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .sidebar-bottle-btn:hover {
+            opacity: 0.95;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(227, 106, 75, 0.3);
+        }
+
+        .sidebar-bottle-btn:active {
+            transform: translateY(1px);
+        }
+ 
+        /* 推薦 */
+        .bottom-rec-section { display: flex; flex-direction: column; margin-top: 30px; }
+        .rec-title { font-size: 16px; font-weight: bold; margin-bottom: 14px; color: var(--brand); border-left: 4px solid var(--brand); padding-left: 10px; }
+        .rec-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+        .rec-card { background: #fff; border: 1px solid var(--border); border-radius: 12px; padding: 14px; display: flex; gap: 14px; align-items: center; cursor: pointer; transition: transform 0.2s; text-decoration: none; color: var(--ink); }
+        .rec-card:hover { transform: translateY(-2px); }
+        .rec-img { width: 45px; height: 60px; background: var(--brand-light); border-radius: 6px; display: grid; place-items: center; font-size: 20px; }
+ 
+        /* RWD */
+        @media (max-width: 1200px) {
+            .read-layout { max-width: 700px; width: 100%; margin: 30px auto; grid-template-columns: 1fr; grid-template-areas: none; display: flex; flex-direction: column; gap: 24px; padding: 0 20px; }
+            .center-content { order: 1; } .right-panel { order: 2; } .author-info-column { order: 3; } .bottom-rec-section { order: 4; }
+            .right-panel, .author-info-column { position: static !important; width: 100%; }
+        }
+        @media (max-width: 768px) {
+            .navbar { position: static !important; display: flex; flex-direction: column; align-items: flex-start; padding: 12px 16px; gap: 14px; width: 100%; }
+            .nav-left { width: 100%; display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
+            .nav-links { width: 100%; display: flex; flex-direction: row; flex-wrap: wrap; gap: 10px; }
+            .nav-right { display: none !important; }
+            .rwd-avatar-item { display: inline-block !important; position: relative; flex-shrink: 0; margin-left: auto; transform: scale(0.9); }
+            .read-layout { padding: 0 12px; margin: 15px auto; }
+            .panel { padding: 20px; }
+            .article-title { font-size: 25px; }
+            .article-text { font-size: 16px; line-height: 2.0; }
+            #inlineCommentBox { width: 240px; }
+        }
+  
